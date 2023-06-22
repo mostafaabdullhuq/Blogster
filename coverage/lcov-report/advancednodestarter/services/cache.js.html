@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for advancednodestarter/services/cache.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">advancednodestarter/services</a> cache.js
+    </h1>
+    <div class='clearfix'>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const mongoose = <span class="cstat-no" title="statement not covered" >require("mongoose");</span>
+const { redisClient } = <span class="cstat-no" title="statement not covered" >require("./redis");</span>
+&nbsp;
+// save reference to the old exec function
+const __exec = <span class="cstat-no" title="statement not covered" >mongoose.Query.prototype.exec;</span>
+&nbsp;
+// adding a new function to the mongoose query prototype that enables cache with redis for the query instance
+<span class="cstat-no" title="statement not covered" >mongoose.Query.prototype.cache = <span class="fstat-no" title="function not covered" >function (</span>options = <span class="branch-0 cbranch-no" title="branch not covered" >{}) {</span></span>
+<span class="cstat-no" title="statement not covered" >    this.useCache = true; // add property to the query instance</span>
+<span class="cstat-no" title="statement not covered" >    this.cacheExpire = +options.expire || null; // get the expiration seconds</span>
+<span class="cstat-no" title="statement not covered" >    this.mainHashKey = JSON.stringify(options.key) || "default"; // get the main hash key</span>
+<span class="cstat-no" title="statement not covered" >    return this; // returns the instance (enable this cache() function to be chainable)</span>
+};
+&nbsp;
+// modifies the default exec function in mongoose
+<span class="cstat-no" title="statement not covered" >mongoose.Query.prototype.exec = <span class="fstat-no" title="function not covered" >async function () </span>{</span>
+    // if cache options is set to false, then use the database
+<span class="cstat-no" title="statement not covered" >    if (!this.useCache) {</span>
+<span class="cstat-no" title="statement not covered" >        return __exec.apply(this, arguments);</span>
+    }
+&nbsp;
+    // if cache is enabled for this query
+&nbsp;
+    // create unique key for storing the value of the query
+    // key combines the query with the collection name as a json string
+    const queryKey = <span class="cstat-no" title="statement not covered" >JSON.stringify({</span>
+        ...this.getQuery(),
+        collection: this.mongooseCollection.name,
+    });
+&nbsp;
+    // check if the query already cached
+    const cachedValue = <span class="cstat-no" title="statement not covered" >await redisClient.hget(this.mainHashKey, queryKey);</span>
+&nbsp;
+    // if query is already cached
+<span class="cstat-no" title="statement not covered" >    if (cachedValue) {</span>
+        // parse the json to js object
+        const parsedValue = <span class="cstat-no" title="statement not covered" >JSON.parse(cachedValue);</span>
+&nbsp;
+        // if the query result is array of objects, iterate over each object and convert it to model instance then return
+<span class="cstat-no" title="statement not covered" >        if (Array.isArray(parsedValue)) {</span>
+<span class="cstat-no" title="statement not covered" >            return parsedValue.map((<span class="fstat-no" title="function not covered" >eachDoc) =&gt; <span class="cstat-no" title="statement not covered" >new this.model(eachDoc));</span></span></span>
+        }
+&nbsp;
+        // if the query result is single object convert it to model instance and return it
+<span class="cstat-no" title="statement not covered" >        return new this.model(parsedValue);</span>
+    }
+&nbsp;
+    // if query is not cached, get the result from the database
+    const queryResult = <span class="cstat-no" title="statement not covered" >await __exec.apply(this, arguments);</span>
+    // cache the result to redis and return the result
+<span class="cstat-no" title="statement not covered" >    redisClient.hset(this.mainHashKey, queryKey, JSON.stringify(queryResult), "EX", this.cacheExpire === null ? 10e10 : this.cacheExpire);</span>
+<span class="cstat-no" title="statement not covered" >    return queryResult;</span>
+};
+&nbsp;
+// clears a specific key content from the cache storage
+<span class="cstat-no" title="statement not covered" >exports.clearCache = <span class="fstat-no" title="function not covered" >function (</span>key) {</span>
+<span class="cstat-no" title="statement not covered" >    redisClient.del(JSON.stringify(key));</span>
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Jun 20 2023 15:57:39 GMT+0300 (Eastern European Summer Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

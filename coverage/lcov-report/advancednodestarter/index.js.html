@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for advancednodestarter/index.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">advancednodestarter</a> index.js
+    </h1>
+    <div class='clearfix'>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = <span class="cstat-no" title="statement not covered" >require("express");</span>
+const mongoose = <span class="cstat-no" title="statement not covered" >require("mongoose");</span>
+const cookieSession = <span class="cstat-no" title="statement not covered" >require("cookie-session");</span>
+const passport = <span class="cstat-no" title="statement not covered" >require("passport");</span>
+const bodyParser = <span class="cstat-no" title="statement not covered" >require("body-parser");</span>
+const keys = <span class="cstat-no" title="statement not covered" >require("./config/keys");</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >require("./models/User");</span>
+<span class="cstat-no" title="statement not covered" >require("./models/Blog");</span>
+<span class="cstat-no" title="statement not covered" >require("./services/passport");</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >mongoose.Promise = global.Promise;</span>
+<span class="cstat-no" title="statement not covered" >mongoose.connect(keys.mongoURI, {</span>
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+&nbsp;
+const app = <span class="cstat-no" title="statement not covered" >express();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >app.use(bodyParser.json());</span>
+<span class="cstat-no" title="statement not covered" >app.use(</span>
+    cookieSession({
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        keys: [keys.cookieKey],
+    })
+);
+<span class="cstat-no" title="statement not covered" >app.use(passport.initialize());</span>
+<span class="cstat-no" title="statement not covered" >app.use(passport.session());</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >require("./routes/authRoutes")(app);</span>
+<span class="cstat-no" title="statement not covered" >require("./routes/blogRoutes")(app);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >if (["production"].includes(process.env.NODE_ENV)) {</span>
+<span class="cstat-no" title="statement not covered" >    app.use(express.static("client/build"));</span>
+&nbsp;
+    const path = <span class="cstat-no" title="statement not covered" >require("path");</span>
+<span class="cstat-no" title="statement not covered" >    app.get("*", <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        res.sendFile(path.resolve("client", "build", "index.html"));</span>
+    });
+}
+&nbsp;
+const PORT = <span class="cstat-no" title="statement not covered" >process.env.PORT || 8000;</span>
+<span class="cstat-no" title="statement not covered" >app.listen(PORT, <span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    console.log(`Listening on port`, PORT);</span>
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Jun 20 2023 15:57:39 GMT+0300 (Eastern European Summer Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for advancednodestarter/routes/blogRoutes.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">advancednodestarter/routes</a> blogRoutes.js
+    </h1>
+    <div class='clearfix'>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const mongoose = <span class="cstat-no" title="statement not covered" >require("mongoose");</span>
+const requireLogin = <span class="cstat-no" title="statement not covered" >require("../middlewares/requireLogin");</span>
+const clearCache = <span class="cstat-no" title="statement not covered" >require("./../middlewares/clearCache");</span>
+<span class="cstat-no" title="statement not covered" >require("./../services/cache");</span>
+&nbsp;
+const Blog = <span class="cstat-no" title="statement not covered" >mongoose.model("Blog");</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >module.exports = (<span class="fstat-no" title="function not covered" >app) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    app.get("/api/blogs/:id", requireLogin, <span class="fstat-no" title="function not covered" >async (</span>req, res) =&gt; {</span>
+        const blog = <span class="cstat-no" title="statement not covered" >await Blog.findOne({</span>
+            _user: req.user.id,
+            _id: req.params.id,
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        res.send(blog);</span>
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    app.get("/api/blogs", requireLogin, <span class="fstat-no" title="function not covered" >async (</span>req, res) =&gt; {</span>
+        const blogs = <span class="cstat-no" title="statement not covered" >await Blog.find({ _user: req.user.id }).cache({ expire: 300, key: req.user.id });</span>
+<span class="cstat-no" title="statement not covered" >        res.send(blogs);</span>
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    app.post("/api/blogs", requireLogin, clearCache, <span class="fstat-no" title="function not covered" >async (</span>req, res) =&gt; {</span>
+        const { title, content } = <span class="cstat-no" title="statement not covered" >req.body;</span>
+&nbsp;
+        const blog = <span class="cstat-no" title="statement not covered" >new Blog({</span>
+            title,
+            content,
+            _user: req.user.id,
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        try {</span>
+<span class="cstat-no" title="statement not covered" >            await blog.save();</span>
+<span class="cstat-no" title="statement not covered" >            res.send(blog);</span>
+        } catch (err) {
+<span class="cstat-no" title="statement not covered" >            res.send(400, err);</span>
+        }
+    });
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Jun 20 2023 15:57:39 GMT+0300 (Eastern European Summer Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
