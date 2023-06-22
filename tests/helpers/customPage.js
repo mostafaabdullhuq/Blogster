@@ -1,15 +1,16 @@
 const puppeteer = require("puppeteer");
 const sessionFactory = require("./../factories/sessionFactory");
 const userFactory = require("./../factories/userFactory");
+const { baseURL } = require("./../../config/keys");
 
 class CustomDriver {
     static async build() {
         // launch a new browser
         const browser = await puppeteer.launch({
-            headless: "new",
-            // headless: false,
+            headless: "new", // new headless mode on chromium
+            // headless: false, // show the browser
             defaultViewport: null,
-            slowMo: 100, // slow down all operations for 300ms to debug
+            slowMo: 100, // slow down all operations for 100ms to easily debug
             executablePath: process.env[`PUPPETEER_EXECUTABLE_PATH`] || null, // set the default executable path already downloaded
         });
 
@@ -17,11 +18,16 @@ class CustomDriver {
         const page = await browser.newPage();
 
         // make a new instance of this class, and pass the created page as constructor argument
-        const customDriver = new CustomDriver(page);
+        const customDriver = new CustomDriver();
 
         // return proxy object
         return new Proxy(customDriver, {
             get: function (target, property, receiver) {
+                /*
+                    we use this approach instead of return page[property] || browser[property] || target[property]
+                    because of the private methods and attributes problem in javascript when trying to use proxies!
+                */
+
                 // if called property exists in the custom driver class (which we implement by ourself), return it
                 if (target[property]) {
                     return target[property];
@@ -46,13 +52,9 @@ class CustomDriver {
                         return value.apply(this === receiver ? page : this, args);
                     };
                 }
-                return page[property] || browser[property];
+                return browser[property] || page[property];
             },
         });
-    }
-
-    constructor(page) {
-        this.page = page;
     }
 
     async login() {
@@ -72,8 +74,20 @@ class CustomDriver {
             value: signature,
         });
 
-        // reload the current tab
-        await this.reload();
+        await this.goto(`${baseURL}blogs`); // redirect to the blogs page
+    }
+
+    // clicks on my blogs anchor on the header, and waits until the blogs page loads
+    async goToBlogs() {
+        const myBlogsEl = await this.waitForXPath('//ul//a[@href="/blogs"]');
+        await myBlogsEl.click();
+        await this.waitForNavigation(); // wait until the page finish loading
+    }
+
+    // takes an xpath expression, wait until the element with the given xpath is found, then extract it's inner text and returns it
+    async getXpathContent(xpath) {
+        const element = await this.waitForXPath(xpath);
+        return element.evaluate((el) => el.innerText || el.value);
     }
 }
 

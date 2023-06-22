@@ -3,4 +3,5 @@ module.exports = {
     googleClientSecret: "8mkniDQOqacXtlRD3gA4n2az",
     mongoURI: "mongodb://localhost:27017/blog_dev",
     cookieKey: "123123123",
+    baseURL: "http://localhost:3000/",
 };

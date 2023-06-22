@@ -1,28 +1,17 @@
 // const puppeteer = require("puppeteer");
-const mongoose = require("mongoose");
+const { disconnect } = require("mongoose");
 const CustomDriver = require("./helpers/customPage");
+const { baseURL } = require("./../config/keys");
 
 let driver;
 
 // run this function before each test getting executed in this file
 // DRY TESTS (don't repeat this code on each test)
 beforeEach(async () => {
-    // launch a new browser instance
-    // browser = await puppeteer.launch({
-    //     // headless: "new",
-    //     headless: false,
-    //     defaultViewport: null,
-    //     slowMo: 100, // slow down all operations for 300ms to debug
-    //     executablePath: process.env[`PUPPETEER_EXECUTABLE_PATH`] || null, // set the default executable path already downloaded
-    // });
-    // by default, when creating a new browser instance, a new tab (page) is created automatically for this browser
-
+    // build custom driver instance (launches a new browser, opens a new tab, then returns a new modified proxy object)
     driver = await CustomDriver.build();
 
-    // create a new tab in the opened browser
-    // (it's not required to call it, but it's for best practice to ensure that we are indeed work with a new tab)
-    // page = await browser.newPage();
-    await driver.goto("http://localhost:3000/"); // go to this url
+    await driver.goto(baseURL); // go to the home url
 });
 
 // run this function after each test finishes
@@ -47,22 +36,34 @@ test("Login with google button redirects to google oauth", async () => {
     expect(loginURL).toMatch(/accounts\.google\.com/);
 });
 
-// run only this test and ignore other tests
-test("When user is logged in , the logout button and my blogs buttons appear", async () => {
-    // const customPage = CustomPage.build();
+// nested tests that is
+describe("When user is logged in", () => {
+    // runs before each test inside this describe
+    beforeEach(async () => {
+        await driver.login();
+    });
 
-    await driver.login();
+    // run only this test and ignore other tests
+    test("the logout button and my blogs buttons appear", async () => {
+        // wait for my blogs and logout buttons to appear on the page
+        const myBlogsEl = await driver.waitForXPath('//ul//a[@href="/blogs"]');
+        const logoutEl = await driver.waitForXPath('//ul//a[@href="/auth/logout"]');
 
-    // wait for my blogs and logout buttons to appear on the page
-    const myBlogsEl = await driver.waitForXPath('//ul//a[@href="/blogs"]');
-    const logoutEl = await driver.waitForXPath('//ul//a[@href="/auth/logout"]');
+        // get the text of the elements
+        const myBlogsText = await myBlogsEl.evaluate((el) => el.innerText),
+            logoutText = await logoutEl.evaluate((el) => el.innerText);
 
-    // get the text of the elements
-    const myBlogsText = await myBlogsEl.evaluate((el) => el.innerText),
-        logoutText = await logoutEl.evaluate((el) => el.innerText);
+        expect(myBlogsText).toEqual("My Blogs");
+        expect(logoutText).toEqual("Logout");
+    });
 
-    expect(myBlogsText).toEqual("My Blogs");
-    expect(logoutText).toEqual("Logout");
-}, 10000); // set 10sec timeout, default is 5sec
+    test("My Blogs button redirects to blogs page", async () => {
+        await driver.goToBlogs(); // login and navigate to my blogs page
 
-afterAll(async () => await mongoose.disconnect());
+        const currentURL = await driver.url(); // get the current url of the tab
+
+        expect(currentURL).toEqual(`${baseURL}blogs`);
+    });
+});
+
+afterAll(async () => await disconnect()); // disconnect mongodb after all tests in this file done
