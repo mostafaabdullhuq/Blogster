@@ -10,8 +10,7 @@ services:
     - redis-server
 # environment variables that will be added every time our app runs
 env:
-    - NODE_ENV=ci
-    - MONGODB_URI=mongodb://127.0.0.1:27017/blog_dev
+    - NODE_ENV=ci MONGODB_URI=mongodb://127.0.0.1:27017/blog_dev
 # cache node_modules and install it for one time rather than install it every time
 # helps for faster building
 cache:
