@@ -24,6 +24,7 @@ install:
     - node node_modules/puppeteer/install.js
 # like install
 script:
+    - apt-get install chromium-browser
     - nohup npm run start & # start the server
     - sleep 5 # sleep time to let the server run
     - npm run test # start testing
