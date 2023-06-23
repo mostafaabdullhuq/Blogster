@@ -77,6 +77,47 @@ class CustomDriver {
         await this.goto(`${baseURL}blogs`); // redirect to the blogs page
     }
 
+    async getApi(path) {
+        return this.evaluate(async (_path) => {
+            const response = await fetch(_path, {
+                method: "GET",
+                // to send cookies with the request
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            return response.json();
+        }, path);
+    }
+
+    async postApi(path, data) {
+        // evaluate converts the passed function to string and give it to
+        // the chromium browser to execute it, then returns the result of
+        // the execution
+
+        // to pass arguments to the function inside the evaluate
+        // we can pass them after the function
+
+        return this.evaluate(
+            async (_path, _data) => {
+                const response = await fetch(_path, {
+                    method: "POST",
+                    // to send cookies with the request
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    // json data in request.body
+                    body: JSON.stringify(_data),
+                });
+                return response.json();
+            },
+            path, // arguments passed to the function inside evaluate
+            data
+        );
+    }
+
     // clicks on my blogs anchor on the header, and waits until the blogs page loads
     async goToBlogs() {
         const myBlogsEl = await this.waitForXPath('//ul//a[@href="/blogs"]');

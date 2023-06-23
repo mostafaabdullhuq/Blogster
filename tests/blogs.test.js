@@ -94,56 +94,23 @@ describe("When user is logged in", () => {
 describe("When user is not logged in", () => {
     test("Cannot create a new blog via api", async () => {
         // evaluate is used to execute code in the browser, and return the result
-        const apiResponse = await driver.evaluate(async () => {
-            const response = await fetch("/api/blogs", {
-                method: "POST",
-                // to send cookies with the request
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                // json data in request.body
-                body: JSON.stringify({
-                    title: "My Title!",
-                    content: "My Content!",
-                }),
-            });
-            return response.json();
+        const apiResponse = await driver.postApi("/api/blogs", {
+            title: FAKE_TITLE,
+            content: FAKE_CONTENT,
         });
 
         expect(apiResponse).toEqual({ error: "You must log in!" });
     });
 
     test("Cannot retrieve blogs list from api", async () => {
-        // evaluate is used to execute code in the browser, and return the result
-        const apiResponse = await driver.evaluate(async () => {
-            const response = await fetch("/api/blogs", {
-                method: "GET",
-                // to send cookies with the request
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            return response.json();
-        });
+        const apiResponse = await driver.getApi("/api/blogs");
 
         expect(apiResponse).toEqual({ error: "You must log in!" });
     });
 
     test("Cannot retrieve a single blog from api", async () => {
         // evaluate is used to execute code in the browser, and return the result
-        const apiResponse = await driver.evaluate(async () => {
-            const response = await fetch("/api/blogs/123456789", {
-                method: "GET",
-                // to send cookies with the request
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            return response.json();
-        });
+        const apiResponse = await driver.getApi("/api/blogs/123456789");
 
         expect(apiResponse).toEqual({ error: "You must log in!" });
     });
