@@ -30,7 +30,7 @@ describe("When user is logged in", () => {
 
     describe("And when new blog (+) anchor is clicked", () => {
         beforeEach(async () => {
-            const myBlogsEl = await this.waitForXPath('//ul//a[@href="/blogs"]');
+            const myBlogsEl = await driver.waitForXPath('//ul//a[@href="/blogs"]');
             await myBlogsEl.click();
             const newBlogEl = await driver.waitForXPath('//a[@href="/blogs/new"]'); // wait for (+) anchor to appear
             await newBlogEl.click(); // click on the anchor

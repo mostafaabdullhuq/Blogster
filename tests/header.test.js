@@ -58,7 +58,8 @@ describe("When user is logged in", () => {
     });
 
     test("My Blogs button redirects to blogs page", async () => {
-        await driver.goToBlogs(); // login and navigate to my blogs page
+        const myBlogsEl = await driver.waitForXPath('//ul//a[@href="/blogs"]');
+        await myBlogsEl.click();
 
         const currentURL = await driver.url(); // get the current url of the tab
 
