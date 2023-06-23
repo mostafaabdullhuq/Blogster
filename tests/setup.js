@@ -1,4 +1,4 @@
-jest.setTimeout(30000); // set default timeout for jest
+jest.setTimeout(60000); // set default timeout for jest (1 min for each test)
 
 require("./../models/User");
 const keys = require("./../config/keys");

@@ -14,10 +14,10 @@ env:
     - NODE_ENV=ci MONGODB_URI=mongodb://127.0.0.1:27017/blog_dev PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
 # cache node_modules and install it for one time rather than install it every time
 # helps for faster building
-# cache:
-#     directories:
-#         - node_modules
-#         - client/node_modules
+cache:
+    directories:
+        - node_modules
+        - client/node_modules
 # all commands that will run
 install:
     - npm install
