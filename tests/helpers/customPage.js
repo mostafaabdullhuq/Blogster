@@ -11,7 +11,8 @@ class CustomDriver {
             // headless: false, // show the browser
             defaultViewport: null,
             slowMo: 100, // slow down all operations for 100ms to easily debug
-            executablePath: process.env[`PUPPETEER_EXECUTABLE_PATH`] || null, // set the default executable path already downloaded
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null, // set the default executable path already downloaded
+            args: ["--no-sandbox"],
         });
 
         // create a new tab

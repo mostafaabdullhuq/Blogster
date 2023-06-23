@@ -1,7 +1,7 @@
 const { createClient } = require("redis");
 const { promisify } = require("util");
-
-const redisClient = createClient("redis://127.0.0.1:6379");
+const keys = require("./../config/keys");
+const redisClient = createClient(keys.redisURL);
 
 // convert normal functions that takes a callback function to a function that returns a promise
 redisClient.get = promisify(redisClient.get);

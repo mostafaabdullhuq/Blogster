@@ -1,5 +1,4 @@
 const dotenv = require("dotenv");
-
 const ENV = dotenv.config().parsed;
 
 module.exports = {
@@ -8,6 +7,6 @@ module.exports = {
     mongoURI: ENV.MONGODB_URI,
     cookieKey: "123123123",
     baseURL: "http://localhost:3000/",
-    apiPort: ENV.PORT,
+    apiPort: 3000,
     redisURL: "redis://127.0.0.1:6379",
 };

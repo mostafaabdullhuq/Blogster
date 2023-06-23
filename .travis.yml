@@ -1,0 +1,30 @@
+language: node_js
+# nodejs version
+node_js:
+    - "18"
+# operating system
+dist: trusty
+# services to install on operating system
+services:
+    - mongodb
+    - redis-server
+# environment variables that will be added every time our app runs
+env:
+    - NODE_ENV=ci
+# cache node_modules and install it for one time rather than install it every time
+# helps for faster building
+cache:
+    directories:
+        - node_modules
+        - client/node_modules
+# all commands that will run
+install:
+    - npm install
+    - npm run build
+# like install
+script:
+    - nohup npm run start & # start the server
+    - sleep 5 # sleep time to let the server run
+    - npm run test # start testing
+addons:
+    chrome: stable
