@@ -19,7 +19,6 @@ cache:
         - client/node_modules
 # all commands that will run
 install:
-    - npm cache clean --force
     - npm install
     - npm run build
     - node node_modules/puppeteer/install.js
