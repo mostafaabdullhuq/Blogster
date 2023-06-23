@@ -119,13 +119,6 @@ class CustomDriver {
         );
     }
 
-    // clicks on my blogs anchor on the header, and waits until the blogs page loads
-    async goToBlogs() {
-        const myBlogsEl = await this.waitForXPath('//ul//a[@href="/blogs"]');
-        await myBlogsEl.click();
-        await this.waitForNavigation(); // wait until the page finish loading
-    }
-
     // takes an xpath expression, wait until the element with the given xpath is found, then extract it's inner text and returns it
     async getXpathContent(xpath) {
         const element = await this.waitForXPath(xpath);
