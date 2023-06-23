@@ -8,15 +8,16 @@ dist: trusty
 services:
     - mongodb
     - redis-server
+    - xvfb
 # environment variables that will be added every time our app runs
 env:
     - NODE_ENV=ci MONGODB_URI=mongodb://127.0.0.1:27017/blog_dev PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
 # cache node_modules and install it for one time rather than install it every time
 # helps for faster building
-cache:
-    directories:
-        - node_modules
-        - client/node_modules
+# cache:
+#     directories:
+#         - node_modules
+#         - client/node_modules
 # all commands that will run
 install:
     - npm install
@@ -24,9 +25,14 @@ install:
     - node node_modules/puppeteer/install.js
 # like install
 script:
+    - sudo apt-get update
+    - sudo apt-get upgrade -y
     - sudo apt-get install ca-certificates fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget xdg-utils chromium-browser
     - nohup npm run start & # start the server
     - sleep 5 # sleep time to let the server run
     - npm run test # start testing
 addons:
     chrome: stable
+
+notifications:
+    email: false
